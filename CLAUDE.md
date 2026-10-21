@@ -15,7 +15,7 @@ python3 -m http.server 8000      # then visit http://localhost:8000
 
 Three files, no framework, no bundler:
 
-- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), and a shared overlay `#overlay` for both PAUSE and GAME OVER states.
+- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), an `#overlay` for GAME OVER, and a `#pause-menu` overlay (Reanudar / Reiniciar / Ver controles / Nivel inicial).
 - **`style.css`** — Dark/retro arcade theme; uses CSS variables, flexbox, and `backdrop-filter` on overlays.
 - **`game.js`** — All game logic (~305 lines, `'use strict'`, no modules).
 
@@ -30,9 +30,11 @@ Three files, no framework, no bundler:
 | Game loop | `loop(ts)` via `requestAnimationFrame`; `dropAccum` tracks elapsed ms against `dropInterval` |
 | Line clear | `clearLines()` — iterates board bottom-up, splices full rows, prepends empty row |
 | Scoring | `LINE_SCORES = [0,100,300,500,800]` × `level`; hard drop +2/cell, soft drop +1/row |
-| Speed | `dropInterval = max(100, 1000 − (level−1) × 90)` ms; level = `floor(lines/10) + 1` |
+| Speed | `dropInterval = max(100, 1000 − (level−1) × 90)` ms; level = `max(startLevel, floor(lines/10) + 1)` |
 | Ghost piece | `ghostY()` — projects current piece down until collision; drawn at `globalAlpha = 0.2` |
 | State flags | `paused`, `gameOver`, `animId` (RAF handle) |
+| Pause menu | `openPauseMenu()` / `resume()` / `restartFromMenu()`; `P`/`Esc` toggle, ↑/↓ navigate. Game input is blocked while open; `resumeGuard` drops key auto-repeat after resuming until keyup |
+| Start level | `startLevel` (1–`MAX_START_LEVEL`, persisted in `localStorage` `tetris-start-level`), applied on next `init()`; level = `max(startLevel, floor(lines/10)+1)` |
 
 ### Game flow
 
