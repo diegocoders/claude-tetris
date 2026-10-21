@@ -52,7 +52,33 @@
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+        <div id="gameover-records" class="records-box" hidden>
+          <p id="new-record-msg" class="new-record-msg" hidden>¡NUEVO RÉCORD!</p>
+          <form id="name-form" class="name-form" hidden>
+            <input id="player-name" type="text" maxlength="12" value="JUGADOR" autocomplete="off" spellcheck="false" aria-label="Nombre del jugador" />
+            <button type="submit" id="save-name-btn">Guardar</button>
+          </form>
+          <span class="label">TOP 5</span>
+          <ol id="gameover-records-list" class="records-list"></ol>
+        </div>
         <button id="restart-btn">Reiniciar</button>
+      </div>
+    </div>
+
+    <div id="start-screen" class="overlay start-screen">
+      <div class="overlay-box">
+        <p class="start-title">TETRIS</p>
+        <div class="records-box">
+          <span class="label">TOP 5</span>
+          <ol id="start-records-list" class="records-list"></ol>
+          <div class="records-stats">
+            <div><span class="label">MEJOR COMBO</span><span class="stat-value" id="start-best-combo">0</span></div>
+            <div><span class="label">MÁX. LÍNEAS</span><span class="stat-value" id="start-max-lines">0</span></div>
+          </div>
+        </div>
+        <button id="play-btn">Jugar</button>
+        <p class="start-hint">o pulsa <kbd>Enter</kbd></p>
+        <button id="reset-records-btn" class="link-btn">Resetear récords</button>
       </div>
     </div>
   </div>
