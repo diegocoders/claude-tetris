@@ -132,7 +132,7 @@ body {
 }
 
 .label {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 2px;
   color: var(--label);
   font-weight: 600;
