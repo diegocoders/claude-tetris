@@ -31,6 +31,7 @@ Three files, no framework, no bundler:
 | Line clear | `clearLines()` — iterates board bottom-up, splices full rows, prepends empty row |
 | Scoring | `LINE_SCORES = [0,100,300,500,800]` × `level`; hard drop +2/cell, soft drop +1/row |
 | Speed | `dropInterval = max(100, 1000 − (level−1) × 90)` ms; level = `max(startLevel, floor(lines/10) + 1)` |
+| Skins | `SKINS` — `{ retro, neon, pastel, pixel }`, each `{ colors, grid, draw }`; `drawBlock()` delegates to `skin.draw`; `applySkin(name)` redraws, persisted in `localStorage['tetris-skin']` |
 | Ghost piece | `ghostY()` — projects current piece down until collision; drawn at `globalAlpha = 0.2` |
 | State flags | `paused`, `gameOver`, `started`, `pendingRecord`, `animId` (RAF handle) |
 | Records | `records` persisted in `localStorage['tetris-records']` as `{ scores: [{name, score, lines}], bestCombo, maxLines }`; top `MAX_RECORDS` (5). `combo` = consecutive line-clearing locks |
@@ -43,4 +44,4 @@ Three files, no framework, no bundler:
 
 ## Tunable constants (top of game.js)
 
-`COLS` (10), `ROWS` (20), `BLOCK` (30 px), `COLORS` (array indexed 1–7), `LINE_SCORES`. If you change `COLS`/`ROWS`/`BLOCK`, update the canvas `width`/`height` attributes in `index.html` to match (`COLS×BLOCK` and `ROWS×BLOCK`).
+`COLS` (10), `ROWS` (20), `BLOCK` (30 px), `SKINS[*].colors` (arrays indexed 1–8), `LINE_SCORES`. If you change `COLS`/`ROWS`/`BLOCK`, update the canvas `width`/`height` attributes in `index.html` to match (`COLS×BLOCK` and `ROWS×BLOCK`).

@@ -155,6 +155,32 @@ body {
   transition: background 0.25s, border-color 0.25s;
 }
 
+/* ---- Skins ---- */
+.skin-select {
+  background: var(--kbd-bg);
+  border: 1px solid var(--kbd-border);
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 13px;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--kbd-text);
+  cursor: pointer;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+
+.skin-select:hover,
+.skin-select:focus {
+  border-color: #7aa2f7;
+  outline: none;
+}
+
+body[data-skin="neon"] #board,
+body[data-skin="neon"] #next-canvas {
+  background: #000;
+  border-color: #2a1a4a;
+  box-shadow: 0 0 30px rgba(212, 0, 255, 0.25);
+}
+
 /* ---- Controles ---- */
 .controls ul {
   list-style: none;
