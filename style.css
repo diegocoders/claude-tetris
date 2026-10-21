@@ -19,6 +19,9 @@
   --toggle-bg: #22223a;
   --toggle-border: #3a3a5a;
   --toggle-text: #aaa;
+  --menu-btn-bg: #22223a;
+  --menu-btn-border: #3a3a5a;
+  --menu-btn-text: #e0e0e0;
 }
 
 body.light-mode {
@@ -36,6 +39,9 @@ body.light-mode {
   --toggle-bg: #dcdcf0;
   --toggle-border: #9090b8;
   --toggle-text: #3a3a6a;
+  --menu-btn-bg: #dcdcf0;
+  --menu-btn-border: #9090b8;
+  --menu-btn-text: #1a1a2e;
 }
 
 body {
@@ -233,4 +239,89 @@ kbd {
 
 #restart-btn:hover {
   background: #9bbdff;
+}
+
+/* ---- Menu de pausa ---- */
+.pause-box {
+  min-width: 200px;
+  gap: 10px;
+}
+
+.pause-title {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: #7aa2f7;
+  margin-bottom: 4px;
+}
+
+.pause-btn {
+  width: 100%;
+  background: var(--menu-btn-bg);
+  color: var(--menu-btn-text);
+  border: 1px solid var(--menu-btn-border);
+  border-radius: 6px;
+  padding: 9px 20px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.pause-btn:hover,
+.pause-btn:focus-visible {
+  border-color: #7aa2f7;
+  color: #7aa2f7;
+  outline: none;
+}
+
+.pause-controls {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-self: stretch;
+  padding: 8px 0;
+}
+
+.pause-controls.hidden {
+  display: none;
+}
+
+.pause-controls li {
+  font-size: 12px;
+  color: var(--controls-text);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pause-level {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  align-self: stretch;
+  margin-top: 4px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--controls-text);
+}
+
+.pause-level select {
+  background: var(--menu-btn-bg);
+  color: var(--menu-btn-text);
+  border: 1px solid var(--menu-btn-border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pause-hint {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--label);
 }
