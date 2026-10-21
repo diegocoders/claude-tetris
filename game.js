@@ -239,8 +239,8 @@ function endGame() {
   cancelAnimationFrame(animId);
   overlayTitle.textContent = 'GAME OVER';
   overlayScore.textContent = `Puntuación: ${score.toLocaleString()}`;
-  showGameOverRecords();
   overlay.classList.remove('hidden');
+  showGameOverRecords();
 }
 
 function togglePause() {
@@ -459,6 +459,8 @@ nameForm.addEventListener('submit', e => {
 });
 
 playBtn.addEventListener('click', startGame);
+// Drop focus so a later Enter doesn't re-trigger the restart mid-game
+restartBtn.addEventListener('click', () => restartBtn.blur());
 
 resetRecordsBtn.addEventListener('click', () => {
   if (!confirm('¿Borrar todos los récords?')) return;
