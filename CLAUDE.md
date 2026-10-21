@@ -15,9 +15,9 @@ python3 -m http.server 8000      # then visit http://localhost:8000
 
 Three files, no framework, no bundler:
 
-- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), and a shared overlay `#overlay` for both PAUSE and GAME OVER states.
+- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), `#overlay` for the GAME OVER state, and `#pause-menu` (pause menu with Reanudar / Reiniciar / Ver controles / Nivel inicial `#start-level`).
 - **`style.css`** — Dark/retro arcade theme; uses CSS variables, flexbox, and `backdrop-filter` on overlays.
-- **`game.js`** — All game logic (~305 lines, `'use strict'`, no modules).
+- **`game.js`** — All game logic (~390 lines, `'use strict'`, no modules).
 
 ### game.js internals
 
@@ -29,14 +29,16 @@ Three files, no framework, no bundler:
 | Collision | `collide(shape, ox, oy)` — checks bounds and board occupancy |
 | Game loop | `loop(ts)` via `requestAnimationFrame`; `dropAccum` tracks elapsed ms against `dropInterval` |
 | Line clear | `clearLines()` — iterates board bottom-up, splices full rows, prepends empty row |
+| Pause menu | `togglePause()` (P / Escape) shows `#pause-menu` and focuses Reanudar; `hidePauseMenu()` hides it and blurs focus so Space/Enter don't re-trigger buttons; while `paused`, all game keys are ignored |
+| Start level | `startLevel` (1–`MAX_START_LEVEL`), persisted as `tetris-start-level` via `loadStartLevel()`; applied on next `init()` |
 | Scoring | `LINE_SCORES = [0,100,300,500,800]` × `level`; hard drop +2/cell, soft drop +1/row |
-| Speed | `dropInterval = max(100, 1000 − (level−1) × 90)` ms; level = `floor(lines/10) + 1` |
+| Speed | `dropInterval = speedForLevel(level)` = `max(100, 1000 − (level−1) × 90)` ms; level = `gameStartLevel + floor(lines/10)` (`gameStartLevel` = `startLevel` captured at `init()`) |
 | Ghost piece | `ghostY()` — projects current piece down until collision; drawn at `globalAlpha = 0.2` |
 | State flags | `paused`, `gameOver`, `animId` (RAF handle) |
 
 ### Game flow
 
-`init()` → `spawn()` → `requestAnimationFrame(loop)`. Each frame: accumulate dt → auto-drop or `lockPiece()` → `draw()`. `lockPiece()` = `merge()` + `clearLines()` + `spawn()`. If `spawn()` immediately collides → `endGame()`.
+`init()` (resets to `startLevel`, hides overlays) → `spawn()` → `requestAnimationFrame(loop)`. Each frame: accumulate dt → auto-drop or `lockPiece()` → `draw()`. `lockPiece()` = `merge()` + `clearLines()` + `spawn()`. If `spawn()` immediately collides → `endGame()`.
 
 ## Tunable constants (top of game.js)
 
