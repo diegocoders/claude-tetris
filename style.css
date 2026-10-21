@@ -306,6 +306,7 @@ kbd {
 }
 
 .start-level .label {
+  font-size: 11px;
   color: var(--controls-text);
 }
 
