@@ -15,7 +15,7 @@ python3 -m http.server 8000      # then visit http://localhost:8000
 
 Three files, no framework, no bundler:
 
-- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), and a shared overlay `#overlay` for both PAUSE and GAME OVER states.
+- **`index.html`** — DOM structure: `<canvas id="board">` (300×600px) for the playfield, `<canvas id="next-canvas">` (120×120px) for the preview, sidebar HUD (`#score`, `#lines`, `#level`), and a shared overlay `#overlay` for START, PAUSE and GAME OVER states (mode in `data-mode`), which also hosts the records table (`#records`) and the name form (`#name-form`).
 - **`style.css`** — Dark/retro arcade theme; uses CSS variables, flexbox, and `backdrop-filter` on overlays.
 - **`game.js`** — All game logic (~305 lines, `'use strict'`, no modules).
 
@@ -32,11 +32,12 @@ Three files, no framework, no bundler:
 | Scoring | `LINE_SCORES = [0,100,300,500,800]` × `level`; hard drop +2/cell, soft drop +1/row |
 | Speed | `dropInterval = max(100, 1000 − (level−1) × 90)` ms; level = `floor(lines/10) + 1` |
 | Ghost piece | `ghostY()` — projects current piece down until collision; drawn at `globalAlpha = 0.2` |
-| State flags | `paused`, `gameOver`, `animId` (RAF handle) |
+| State flags | `paused`, `gameOver`, `started`, `pendingRecord`, `animId` (RAF handle) |
+| Records | `records` persisted in `localStorage['tetris-records']` as `{ scores: [{name, score, lines}], bestCombo, maxLines }`; top `MAX_RECORDS` (5). `combo` = consecutive line-clearing locks |
 
 ### Game flow
 
-`init()` → `spawn()` → `requestAnimationFrame(loop)`. Each frame: accumulate dt → auto-drop or `lockPiece()` → `draw()`. `lockPiece()` = `merge()` + `clearLines()` + `spawn()`. If `spawn()` immediately collides → `endGame()`.
+`showStartScreen()` → (Jugar/Enter) `init()` → `spawn()` → `requestAnimationFrame(loop)`. Each frame: accumulate dt → auto-drop or `lockPiece()` → `draw()`. `lockPiece()` = `merge()` + `clearLines()` + `spawn()`. If `spawn()` immediately collides → `endGame()`, which updates best combo/max lines and, if the score enters the top 5, asks for a name (saved on submit or on restart).
 
 ## Tunable constants (top of game.js)
 
